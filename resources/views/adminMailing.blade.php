@@ -17,7 +17,8 @@
                     <th>Mail</th>                    
                     <th>Usuario</th>
                     <th>Ciudad</th>
-                    <th>Fecha Ultimo Envio</th>                    
+                    <th>Fecha Ultimo Envio</th>       
+                    <th>habilitado</th>               
                 </tr>
             </thead>
             <tbody>
@@ -28,13 +29,16 @@
                         <td>{{ $mail->email }}</td>
                         <td>{{ $mail->ciudad }}</td>
                         <td>{{ $mail->Persona }}</td>
-                        <td>19-10-2024</td>                       
+                        <td>{{$mail->fecha_de_envio}}</td>       
+                        <td>{{ $mail->habilitado ? 'Sí' : 'No' }}</td>                
                     </tr>
                 @endforeach
             </tbody>
         </table>
         
-        <button type="submit" class="btn btn-primary">Enviar Seleccionados</button>
+        <button type="submit" class="btn btn-primary mb-5">Enviar Seleccionados</button>
+        
+
     </form>
     <script>
         document.getElementById('select-all').onclick = function() {

@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('mailing', function (Blueprint $table) {
             $table->id();  
-            $table->unsignedBigInteger('mails_id');      
-            $table->foreign('mails_id')->references('id')->on('mails')->onDelete('cascade');
-            $table->date('fecha_de_envio')->nullable();            
+            $table->unsignedBigInteger('mails_id'); // Coincide con el tipo de `id` en `mails`
+            $table->foreign('mails_id')->references('id')->on('mails'); // Definición correcta de la clave foránea
+            $table->date('fecha_de_envio')->nullable();              
             $table->timestamps();
         });   
 

@@ -16,11 +16,16 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('ciudad');
             $table->string('Persona');
-            $table->date('fecha_de_envio')->nullable();            
+            $table->date('fecha_de_envio')->nullable();  
+            $table->boolean('habilitado')->default(true);          
             $table->timestamps();
-        });     
+        });  
 
        
+    }
+    public function down()
+    {
+        Schema::dropIfExists('mails');
     }
     
 };

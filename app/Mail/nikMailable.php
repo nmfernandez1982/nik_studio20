@@ -31,7 +31,7 @@ class nikMailable extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Nik Mailable',
+            subject: 'Propuestas de Capacitación',
         );
     }
 

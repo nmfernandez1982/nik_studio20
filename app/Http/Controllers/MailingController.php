@@ -16,25 +16,24 @@ class MailingController extends Controller
      */
     public function index()
     {
-        $mails=Mails::all();
+        //$mails=Mails::all();
+
+          $mails = Mails::leftJoin('mailing', 'mails.id', '=', 'mailing.mails_id')
+          ->select('mails.*', 'mailing.fecha_de_envio')
+          ->where(function ($query) {
+            $query->where('mailing.fecha_de_envio', '>=', today())   // Fechas mayores a hoy
+                  ->orWhereNull('mailing.fecha_de_envio');           // O fechas que son NULL
+        }) 
+          ->get();
+
+         
+      
+
+
         return view('adminMailing',
                     [ 'mails' => $mails ]
                 );
     }
-
-    // public function enviarMail($id)
-    // {
-    // $mail = Mails::find($id);
-
-    // Mail::send('emails.plantilla', ['mail' => $mail], function($message) use ($mail) {
-    //     $message->to($mail->email)
-    //             ->subject('Asunto del Correo');
-    // });
-
-    // return redirect('adminMailing')
-    //     ->with(['mensaje' => 'Enviado Exitosamente']);
-    // }
-
 
 public function enviarMails(Request $request)
 {
@@ -43,6 +42,7 @@ public function enviarMails(Request $request)
     if ($selectedIds) {
         foreach ($selectedIds as $id) {
             $mailData = Mails::find($id); // Obtener el registro del correo por ID
+            //$mailData = Mails::where('id', $id)->where('habilitado', true);
 
             if ($mailData) {
                 $data = [
@@ -53,6 +53,11 @@ public function enviarMails(Request $request)
 
                 // Enviar el correo
                 Mail::to($mailData->email)->send(new nikMailable($data));
+                // Llamar al método store en MailinkController
+                $mailinkController = new MailingController();
+                $mailinkController->store($mailData->id); // Llama al método y pasa el ID
+
+                
             }
         }
 
@@ -74,9 +79,12 @@ public function enviarMails(Request $request)
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($mails_id)
     {
-        //
+        $mailink = new Mailing;
+        $mailink->mails_id = $mails_id; 
+        $mailink->fecha_de_envio = now(); 
+        $mailink->save(); 
     }
 
     /**
