@@ -9,7 +9,7 @@
     
     <form action="{{ route('enviar.mails') }}" method="POST">
         @csrf
-        <table class="table table-borderless table-striped table-hover">
+        <table class="table table-spaced table-striped table-hover">
             <thead>
                 <tr>
                     <th><input type="checkbox" id="select-all"></th> 
@@ -29,7 +29,7 @@
                         <td>{{ $mail->email }}</td>
                         <td>{{ $mail->ciudad }}</td>
                         <td>{{ $mail->Persona }}</td>
-                        <td>{{$mail->fecha_de_envio}}</td>       
+                        <td  class="bg-primary text-white rounded text-center">{{$mail->fecha_de_envio}}</td>       
                         <td>{{ $mail->habilitado ? 'Sí' : 'No' }}</td>                
                     </tr>
                 @endforeach
