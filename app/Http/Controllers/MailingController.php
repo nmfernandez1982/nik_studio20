@@ -19,12 +19,13 @@ class MailingController extends Controller
         //$mails=Mails::all();
 
           $mails = Mails::leftJoin('mailing', 'mails.id', '=', 'mailing.mails_id')
-          ->select('mails.*', 'mailing.fecha_de_envio')
-          ->where(function ($query) {
-            $query->where('mailing.fecha_de_envio', '>=', today())   // Fechas mayores a hoy
-                  ->orWhereNull('mailing.fecha_de_envio');           // O fechas que son NULL
-        }) 
-          ->get();
+          ->select('mails.*', 'mailing.fecha_de_envio') ->get();
+          
+        //   ->where(function ($query) {
+        //     $query->where('mailing.fecha_de_envio', '>=', today())   // Fechas mayores a hoy
+        //           ->orWhereNull('mailing.fecha_de_envio');           // O fechas que son NULL
+        // }) 
+        //   ->get();
 
          
       
