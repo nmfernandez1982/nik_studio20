@@ -1,4 +1,5 @@
 @extends('layouts.plantilla')
+
 @section('contenido')
     <h1>Envio de Mailing</h1>
     @if (session('mensaje'))
@@ -29,7 +30,9 @@
                         <td>{{ $mail->email }}</td>
                         <td>{{ $mail->ciudad }}</td>
                         <td>{{ $mail->Persona }}</td>
-                        <td  class="bg-primary text-white rounded text-center">{{$mail->fecha_de_envio}}</td>       
+                        <td class="bg-primary text-white rounded text-center" data-fecha-envio="{{ $mail->fecha_de_envio }}">
+                            {{ $mail->fecha_de_envio }}
+                        </td>
                         <td>{{ $mail->habilitado ? 'Sí' : 'No' }}</td>                
                     </tr>
                 @endforeach
@@ -37,15 +40,35 @@
         </table>
         
         <button type="submit" class="btn btn-primary mb-5">Enviar Seleccionados</button>
-        
-
     </form>
+
+    <!-- Paginación -->
+    <div class="d-flex justify-content-center">
+        {{ $mails->links() }}
+    </div>
+    <br>
+    <br>
+
     <script>
         document.getElementById('select-all').onclick = function() {
             var checkboxes = document.getElementsByName('selected_ids[]');
             for (var checkbox of checkboxes) {
                 checkbox.checked = this.checked;
             }
-        };
+        };    
+        document.addEventListener("DOMContentLoaded", function() {
+            const tds = document.querySelectorAll('td[data-fecha-envio]');
+            tds.forEach(td => {
+                const fechaEnvio = new Date(td.getAttribute('data-fecha-envio'));
+                const hoy = new Date();
+                const diffTime = Math.abs(hoy - fechaEnvio);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                if (diffDays > 7) {
+                    td.classList.remove('bg-primary');
+                    td.classList.add('bg-danger');
+                }
+            });
+        });
     </script>
 @endsection
+

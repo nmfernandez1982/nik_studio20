@@ -18,28 +18,11 @@ class MailingController extends Controller
      */
     public function index()
     {
-        //$mails=Mails::all();
-
-        //   $mails = Mails::leftJoin('mailing', 'mails.id', '=', 'mailing.mails_id')
-        //   ->select('mails.*', 'mailing.fecha_de_envio') ->get();
-
           $mails = Mails::leftJoin(DB::raw("(SELECT mails_id, MAX(fecha_de_envio) as fecha_de_envio 
-          FROM mailing 
-          GROUP BY mails_id) as latest_mailing"), 'mails.id', '=', 'latest_mailing.mails_id')
-        ->select('mails.*', 'latest_mailing.fecha_de_envio')
-        ->get();
-
-          
-        //   ->where(function ($query) {
-        //     $query->where('mailing.fecha_de_envio', '>=', today())   // Fechas mayores a hoy
-        //           ->orWhereNull('mailing.fecha_de_envio');           // O fechas que son NULL
-        // }) 
-        //   ->get();
-
-         
-      
-
-
+        FROM mailing 
+        GROUP BY mails_id) as latest_mailing"), 'mails.id', '=', 'latest_mailing.mails_id')
+      ->select('mails.*', 'latest_mailing.fecha_de_envio')
+      ->paginate(10); // Cambia 10 por el número de resultados que deseas por página
         return view('adminMailing',
                     [ 'mails' => $mails ]
                 );
